@@ -16,7 +16,7 @@
         // -------------------------------------------------------------------------------------
             global $APP;
             global $LOGIN;
-            return count($LOGIN) == 0 || (
+            return ($LOGIN == null || count($LOGIN) == 0) || (
                 isset($APP['super_users']) &&
                 is_logged_in() &&
                 in_array($_SESSION['user_data'][$LOGIN['username_field']], $APP['super_users'])
