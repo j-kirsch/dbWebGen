@@ -31,6 +31,25 @@ Developers may add custom functionality and extensions to the engine through hoo
   ```
 * Direct your web browser to the app folder. Upon first visit, a setup wizward will allow you to specify all app settings, which will be stored in a file called `settings.php`. If you encounter any issues or somehow misconfigure your app, you can also manually edit the `settings.php` file with explanations provided in [settings.template.php](settings.template.php)
 
+## Development Setup with docker compose
+
+The docker compose file helps you deploy all or partial components on your machine without setting up a php environment. 
+
+### Requirements 
+
+* docker compose [Docs](https://docs.docker.com/compose/)
+* A database (You can add a postgres image to the docker compose file)
+
+### Getting started
+
+1. Start the dbWebGenerator services (web and php) using docker compose:
+
+```console
+docker compose up
+```
+
+2. Open the dbWebGenerator at (http://localhost:8080)
+
 ## Example Database and App
 An example app using this engine can be seen in the [dbWebGen-demo](https://github.com/eScienceCenter/dbWebGen-demo) repository
 
