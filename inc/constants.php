@@ -15,7 +15,9 @@
 	define('T_TEXT_LINE', 'T_TextLine');
 	define('T_NUMBER', 'T_Number');
 	define('T_TEXT_AREA', 'T_TextArea');
-	define('T_ENUM', 'T_Enum'); // can also emulate boolean
+	if (!defined('T_ENUM')) {
+		define('T_ENUM', 'T_Enum');
+	}
 	define('T_LOOKUP', 'T_ForeignKeyLookup'); // foreign key relationships
 	define('T_PASSWORD', 'T_Password');
 	define('T_UPLOAD', 'T_FileUpload');
