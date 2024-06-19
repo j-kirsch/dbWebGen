@@ -14,3 +14,12 @@ services:
       dockerfile: docker/php/Dockerfile
     volumes:
       - .:/app/
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: docker
+      POSTGRES_USER: postgres
+      POSTGRES_DB: datapest
+    ports:
+      - "5432:5432"
