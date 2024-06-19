@@ -171,7 +171,7 @@ include 'inc/constants.php';
 include 'settings.template.php';
 
 // set schema
-db_exec('set search path to ' . $db_schema);
+db_exec('SET search_path TO ' . $db_schema);
 
 // fetch all tables in schema
 $tables_query = <<<SQL
@@ -239,6 +239,7 @@ SQL;
 
 		// if nextval from a sequence is the default value, make it not editable
 		if($field['editable']
+			&& $col['column_default'] !== null
 			&& preg_match('/^nextval\\(\'(.+)\'::regclass\\)$/', $col['column_default'], $matches)
 		) {
 			$field['editable'] = false;
@@ -664,7 +665,9 @@ SQL;
 
 // append n:m lookup fields to end of field list for each table
 foreach($cardinal_mult as $table_name => $fields) {
-	$TABLES[$table_name]['fields'] += $fields;
+	if(isset($TABLES[$table_name]['fields'])) {
+		$TABLES[$table_name]['fields'] += $fields;
+	}
 }
 
 // now append all incoming 1:N fields from other tables als non-editable cardinalty-multiple fields
@@ -686,7 +689,7 @@ SQL;
 	$stmt = db_exec($display_query, [$table_name, $db_schema]);
 	$first_text_field = ($stmt !== false ? $stmt->fetchColumn() : null);
 	$display_field = 
-		!$first_text_field || in_array($table['fields'][$table['primary_key']['columns'][0]]['type'], [c('TEXT_LINE'), c('TEXT_AREA')])
+		(!$first_text_field || in_array($table['fields'][$table['primary_key']['columns'][0]]['type'], [c('TEXT_LINE'), c('TEXT_AREA')])) && isset($table['primary_key']['columns'][0])
 		? $table['primary_key']['columns'][0]
 		: $first_text_field;
 
@@ -704,21 +707,21 @@ SQL;
 				'lookup' => [
 					'cardinality' => c('CARDINALITY_MULTIPLE'),
 					'table'  => $table_name,
-					'field'  => $table['primary_key']['columns'][0],
+					'field'  => isset($table['primary_key']['columns'][0]) ? $table['primary_key']['columns'][0] : null,
 					'display' => $display_field,
 					'label_display_expr_only' => true
 				],
 				'linkage' => [
 					'table' => $table_name,
 					'fk_self' => $field_name,
-					'fk_other' => $table['primary_key']['columns'][0]
+					'fk_other' => isset($table['primary_key']['columns'][0]) ? $table['primary_key']['columns'][0] : null
 				]
 			];
 		}
 	}
 }
 
-if($tables_setup_json) {
+if(isset($tables_setup_json) && $tables_setup_json) {
 	echo json_encode(['tables' => $TABLES]);
 	exit;
 }
