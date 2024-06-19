@@ -6,9 +6,17 @@ RUN npm install
 
 COPY . /app
 
+
+
 FROM php:fpm-alpine3.19
 
 COPY --from=build /app /app
 
+RUN set -ex \
+  && apk --no-cache add \
+    postgresql-dev
+
+
+RUN docker-php-ext-install pdo_pgsql
 
 VOLUME ["/app"]
