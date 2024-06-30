@@ -19,4 +19,8 @@ RUN set -ex \
 
 RUN docker-php-ext-install pdo_pgsql
 
+
+# Change ownership of /app directory
+RUN chown -R  www-data:www-data /app
+
 VOLUME ["/app"]

@@ -116,9 +116,11 @@ HTML;
                     strtoupper($config_part),
                     preg_replace('/\s=>\s*array \(/', ' => array(', var_export($val, true)));
             }
-            $res = @file_put_contents('settings.php', $config);
-            if($res === false)
-                return l10n('setup.wizard.save-error-file');
+            $res = @file_put_contents('/app/settings.php', $config);
+            if($res === false) {
+                $error = error_get_last();
+                return l10n('setup.wizard.save-error-file') . ' ' . $error['message'];
+            }
             return l10n('setup.wizard.save-success');
         }
 
@@ -234,13 +236,32 @@ HTML;
                     db_dropdown.on('change', db_type_changed);
                     $('#save').click(function() {
                         var post_params = {};
+                        var failed_parts = []; // Array to store the config parts that fail validation
+
                         for(var i = 0; i < config_parts.length; i++) {
+                            var validationErrors = window.editor[config_parts[i]].validate();
                             if(window.editor[config_parts[i]].validate().length > 0) {
-                                alert("There are still required settings missing. Please check all tabs and fill in the required fields.");
-                                return false;
+                                // Extract the error messages and add them to the array
+                                var errorMessages = validationErrors.map(function(error) {
+                                    return config_parts[i] + ": " + error.message;
+                                });
+                                failed_parts.push.apply(failed_parts, errorMessages);
+                            } else {
+                                post_params[config_parts[i]] = JSON.stringify(window.editor[config_parts[i]].getValue());
                             }
-                            post_params[config_parts[i]] = JSON.stringify(window.editor[config_parts[i]].getValue());
                         }
+
+                        if(failed_parts.length > 0) {
+                            // Inform the user about the specific config parts that failed validation
+                            alert("The following settings are missing or invalid: " + failed_parts.join("; ") + "Please check all tabs and fill in the required fields.");
+                            return false;
+                        }
+
+                        $.post('?mode=func&target=setupwizard_save_settings', post_params, function(data) {
+                            console.log(data);
+                            alert(data);
+                            $('#exit').removeClass('hidden');
+                        });
                         $.post('?mode=func&target=setupwizard_save_settings', post_params, function(data) {
                             console.log(data);
                             alert(data);
