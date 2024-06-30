@@ -39,7 +39,7 @@
 	require_once ENGINE_PATH_LOCAL . 'inc/container.php';
 	require_once ENGINE_PATH_LOCAL . 'inc/login.php';
 	require_once ENGINE_PATH_LOCAL . 'inc/page.php';
-	$settings_exist = file_exists('settings.php');
+	$settings_exist = file_exists(__DIR__ . '/settings.php');
 	if($settings_exist) {
 		require_once 'settings.php';
 
