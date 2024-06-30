@@ -88,11 +88,23 @@ $TABLES = [
         ],
         'placeholder' => 'Auswählen: Person',
       ],
+      'id' => [
+        'label' => 'ID',
+        'required' => true,
+        'editable' => false,
+        'type' => T_NUMBER,
+        'pg_info' => [
+          'type' => 'integer',
+          'sequence' => 'beziehung_id_seq',
+        ],
+      ],
     ],
     'primary_key' => [
       'columns' => [
+        0 => 'id',
       ],
-      'auto' => false,
+      'auto' => true,
+      'sequence_name' => 'beziehung_id_seq',
     ],
   ],
   'beziehungart' => [
@@ -137,14 +149,14 @@ $TABLES = [
         'lookup' => [
           'cardinality' => CARDINALITY_MULTIPLE,
           'table' => 'beziehung',
-          'field' => NULL,
-          'display' => false,
+          'field' => 'id',
+          'display' => 'id',
           'label_display_expr_only' => true,
         ],
         'linkage' => [
           'table' => 'beziehung',
           'fk_self' => 'artderbeziehung',
-          'fk_other' => NULL,
+          'fk_other' => 'id',
         ],
       ],
     ],
@@ -330,14 +342,14 @@ $TABLES = [
         'lookup' => [
           'cardinality' => CARDINALITY_MULTIPLE,
           'table' => 'beziehung',
-          'field' => NULL,
-          'display' => false,
+          'field' => 'id',
+          'display' => 'id',
           'label_display_expr_only' => true,
         ],
         'linkage' => [
           'table' => 'beziehung',
           'fk_self' => 'beziehungvon',
-          'fk_other' => NULL,
+          'fk_other' => 'id',
         ],
       ],
       'beziehung_beziehungmit_rev_fk' => [
@@ -348,14 +360,14 @@ $TABLES = [
         'lookup' => [
           'cardinality' => CARDINALITY_MULTIPLE,
           'table' => 'beziehung',
-          'field' => NULL,
-          'display' => false,
+          'field' => 'id',
+          'display' => 'id',
           'label_display_expr_only' => true,
         ],
         'linkage' => [
           'table' => 'beziehung',
           'fk_self' => 'beziehungmit',
-          'fk_other' => NULL,
+          'fk_other' => 'id',
         ],
       ],
       'urkunde_person_person_id_rev_fk' => [
@@ -366,14 +378,14 @@ $TABLES = [
         'lookup' => [
           'cardinality' => CARDINALITY_MULTIPLE,
           'table' => 'urkunde_person',
-          'field' => NULL,
-          'display' => false,
+          'field' => 'id',
+          'display' => 'id',
           'label_display_expr_only' => true,
         ],
         'linkage' => [
           'table' => 'urkunde_person',
           'fk_self' => 'person_id',
-          'fk_other' => NULL,
+          'fk_other' => 'id',
         ],
       ],
     ],
@@ -427,14 +439,14 @@ $TABLES = [
         'lookup' => [
           'cardinality' => CARDINALITY_MULTIPLE,
           'table' => 'urkunde_person',
-          'field' => NULL,
-          'display' => false,
+          'field' => 'id',
+          'display' => 'id',
           'label_display_expr_only' => true,
         ],
         'linkage' => [
           'table' => 'urkunde_person',
           'fk_self' => 'rolle_id',
-          'fk_other' => NULL,
+          'fk_other' => 'id',
         ],
       ],
     ],
@@ -633,14 +645,14 @@ $TABLES = [
         'lookup' => [
           'cardinality' => CARDINALITY_MULTIPLE,
           'table' => 'urkunde_person',
-          'field' => NULL,
-          'display' => false,
+          'field' => 'id',
+          'display' => 'id',
           'label_display_expr_only' => true,
         ],
         'linkage' => [
           'table' => 'urkunde_person',
           'fk_self' => 'urkunde_id',
-          'fk_other' => NULL,
+          'fk_other' => 'id',
         ],
       ],
     ],
@@ -716,11 +728,23 @@ $TABLES = [
         ],
         'placeholder' => 'Auswählen: Rollen',
       ],
+      'id' => [
+        'label' => 'ID',
+        'required' => true,
+        'editable' => false,
+        'type' => T_NUMBER,
+        'pg_info' => [
+          'type' => 'integer',
+          'sequence' => 'urkunde_person_id_seq',
+        ],
+      ],
     ],
     'primary_key' => [
       'columns' => [
+        0 => 'id',
       ],
-      'auto' => false,
+      'auto' => true,
+      'sequence_name' => 'urkunde_person_id_seq',
     ],
   ],
 ];
